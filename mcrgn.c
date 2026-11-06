@@ -221,6 +221,9 @@ static gboolean on_tree_view_button_press(GtkWidget *widget, GdkEventButton *eve
     if (event->type == GDK_BUTTON_PRESS && event->button == 3) {
         GtkTreePath *path;
         if (gtk_tree_view_get_path_at_pos(GTK_TREE_VIEW(widget), (gint)event->x, (gint)event->y, &path, NULL, NULL, NULL)) {
+            GtkTreeSelection *selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(widget));
+            gtk_tree_selection_select_path(selection, path);
+
             GtkTreeModel *model = gtk_tree_view_get_model(GTK_TREE_VIEW(widget));
             GtkTreeIter iter;
             if (gtk_tree_model_get_iter(model, &iter, path)) {
@@ -260,7 +263,7 @@ static void on_generate_clicked(GtkWidget *parent_window, gpointer data) {
                                                     NULL);
 
     GtkFileChooser *chooser = GTK_FILE_CHOOSER(dialog);
-    gtk_file_chooser_set_current_name(chooser, "wayland_macro.fish");
+    gtk_file_chooser_set_current_name(chooser, "script.fish");
 
     if (gtk_dialog_run(GTK_DIALOG(dialog)) == GTK_RESPONSE_ACCEPT) {
         char *filename = gtk_file_chooser_get_filename(chooser);
